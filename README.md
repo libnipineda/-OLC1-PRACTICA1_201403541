@@ -1,2 +1,2 @@
-# -OLC1-PRACTICA1_201403541
+# -OLC1-PRACTICA2_201403541
 Traductor de lenguaje de programacion C# a Python.
