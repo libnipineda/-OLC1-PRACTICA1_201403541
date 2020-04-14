@@ -26,10 +26,9 @@
 							<li><a href="index.html">Inicio</a></li>
 							<li><a href="Reportes.html">Reportes</a></li>
 							<li><a href="TablaVariable.html">Tabla de variables</a></li>
-							<li><a href="elements.html">Elements</a></li>
 						</ul>
 						<ul class="actions stacked">
-							<li><a href="#one" class="button primary fit">Get Started</a></li>
+							<li><a href="#one" class="button primary fit">Comenzar</a></li>
 						</ul>
 					</nav>
 
@@ -46,87 +45,59 @@
 									representacion en formato JSON del codigo HTML.
 								</p>
 								<ul class="actions">
-									<li><a href="#one" class="button next scrolly">Get Started</a></li>
+									<li><a href="#one" class="button next scrolly">Comenzar</a></li>
 								</ul>
 							</div>
 						</div>
 					</section>
 
-				<!-- Main -->
-					<div id="main">
+				<!-- One -->
+				<section id="one">
+					<div class="inner">
+						<form method="post" action = "#">
+							<div class="field">
+								<input id="archivos" type="file" size="50" onchange="processFiles(this.files)">
+								<label for="message">CODIGO EN C#</label>
+									<textarea id="editor" rows="10" cols="80"></textarea>
+								<ul class="actions">
+									<p>
+										<li><input type="submit" value="TRADUCIR" class="primary" /></li>
+				                        <li><input type="reset" value="LIMPIAR" /></li>
+									</p>
+								</ul>
+							</div>
 
-						<!-- One -->
-							<section id="one" class="tiles">
-								<article>
-									<span class="image">
-										<img src="images/pic01.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Aliquam</a></h3>
-										<p>Ipsum dolor sit amet</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic02.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Tempus</a></h3>
-										<p>feugiat amet tempus</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic03.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Magna</a></h3>
-										<p>Lorem etiam nullam</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic04.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Ipsum</a></h3>
-										<p>Nisl sed aliquam</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic05.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Consequat</a></h3>
-										<p>Ipsum dolor sit amet</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic06.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="Reportes.html" class="link">Etiam</a></h3>
-										<p>Feugiat amet tempus</p>
-									</header>
-								</article>
-							</section>
+							<div class="field">
+								<!-- Codigo en python -->
+								<h3>CODIGO EN PYTHON</h3>
+								<pre><code>i = 0;
+while (!deck.isInOrder()) {
+print 'Iteration ' + i;
+deck.shuffle();
+i++;
+}
+										
+print 'It took ' + i + ' iterations to sort the deck.';
+								</code>							
+								</pre>									
+							</div>
 
-						<!-- Two -->
-							<section id="two">
-								<div class="inner">
-									<header class="major">
-										<h2>Massa libero</h2>
-									</header>
-									<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.</p>
-									<ul class="actions">
-										<li><a href="Reportes.html" class="button next">Get Started</a></li>
-									</ul>
-								</div>
-							</section>
+							<div class="field">
+								<!-- Codigo en html -->
+								<h3>HTML</h3>
+								<pre><code>codigo html;
+								</code>
+								</pre>
+
+								<!-- Codigo en json -->
+								<h3>JSON</h3>
+								<pre><code>codigo JSON
+								</code></pre>
+							</div>
+						</form>
 					</div>
-
+				</section>
+				
 				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
@@ -149,6 +120,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/menu.js"></script>
 
 	</body>
 </html>
