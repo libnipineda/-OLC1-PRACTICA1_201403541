@@ -56,13 +56,17 @@
 					<div class="inner">
 						<form method="post" action = "#">
 							<div class="field">
-								<input id="archivos" type="file" size="50" onchange="processFiles(this.files)">
+								<ul class="actions small">
+									<li><label for="message" >SUBIR DOCUMENTO</label></li>
+									<li><input id="archivos" type="file" size="50" onchange="processFiles(this.files)"></li>
+									<li><a onclick="Guardar()" class="button primary small">Guardar Archivo</a></li>
+								</ul>
 								<label for="message">CODIGO EN C#</label>
 									<textarea id="editor" rows="10" cols="80"></textarea>
+									<br>
 								<ul class="actions">
 									<p>
-										<li><input type="submit" value="TRADUCIR" class="primary" /></li>
-				                        <li><input type="reset" value="LIMPIAR" /></li>
+										<li><input type="submit" value="TRADUCIR" class="primary" onchange="Scanner(editor)" /></li>
 									</p>
 								</ul>
 							</div>
@@ -121,6 +125,8 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/menu.js"></script>
-
+			<script src="assets/js/Lexico.js"></script>			
+			<script src="assets/js/Sintactico.js"></script>
+			<script src="assets/js/Listas.js"></script>
 	</body>
 </html>
