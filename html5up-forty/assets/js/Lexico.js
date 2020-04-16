@@ -15,7 +15,6 @@ class Lexico
     {
         this.listaToken = [];
         this.listaError = [];
-        var token = "";
     }
     
 Scanner(cadena)
@@ -103,9 +102,8 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 2 ------------------------------
             case 2:
-                this.AnalizarTkn(concatenar);
                 estado = 0;
-                let temporal = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna)
+                let temporal = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna)
                 this.listaToken.push(temporal);
                 indice++; concatenar = "";
                 break;
@@ -128,7 +126,7 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let temporal = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    let temporal = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                     this.listaToken.push(temporal);
                     indice++; concatenar = "";
                 }
@@ -168,7 +166,7 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let aux = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    let aux = new Token(indice,concatenar,50,"signo /",tempfila,tempcolumna);
                     this.listaToken.push(aux);
                     indice++; concatenar = "";
                 }
@@ -237,7 +235,7 @@ Scanner(cadena)
             case 12:
                 this.AnalizarTkn(concatenar);
                 estado = 0;
-                let temporal1 = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                let temporal1 = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                 this.listaToken.push(temporal1);
                 indice++; concatenar = "";
                 break;
@@ -264,7 +262,7 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let aux = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    let aux = new Token(indice,concatenar,51,"Comentario",tempfila,tempcolumna);
                     this.listaToken.push(aux);
                     indice++; concatenar = "";
                 }
@@ -294,7 +292,7 @@ Scanner(cadena)
             case 17:
                 this.AnalizarTkn(concatenar);
                 estado = 0;
-                let temporal2 = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                let temporal2 = new Token(indice,concatenar,52,"Comentario Multilinea",tempfila,tempcolumna);
                 this.listaToken.push(temporal2);
                 indice++; concatenar = "";
                 break;    
@@ -303,9 +301,16 @@ Scanner(cadena)
 
     console.log("//////////////////////");
     console.log("tokens:");
-    for(var i = 0; i < this.listaToken.length; i++)
+    if(this.listaToken.length == 0)
     {
-        console.log(this.listaTokens[i]);        
+        console.log("No hay valores en la lista");
+    }
+    else
+    {
+        for(var i = 0; i < this.listaToken.length; i++)
+        {
+           console.log(this.listaToken[i]);        
+        }
     }
 
     console.log("errores:");
@@ -320,196 +325,298 @@ AnalizarTkn(valorTkn)
     switch(valorTkn)
     {
         case "class":
-            token = "Palabra Reservada."; idtkn = 2;
-            break;
+            return "Palabra Reservada.";
 
         case "static":
-            token = "Palabra Reservada."; idtkn = 3;
-            break;
+            return "Palabra Reservada.";
 
         case "void":
-            token = "Palabra Reservada."; idtkn = 4;
-            break;
+            return "Palabra Reservada.";
 
         case "Main":
-            token = "Palabra Reservada."; idtkn = 5;
-            break;
+            return "Palabra Reservada.";
 
         case "(":
-            token = "Signo de parentesis abierto."; idtkn = 6;
-            break;               
+            return "Signo de parentesis abierto.";
 
         case "args":
-            token = "Palabra Reservada."; idtkn = 7;
-            break;
+            return "Palabra Reservada.";
 
         case ")":
-            token = "Signo de parentesis que cierra."; idtkn = 8;
-            break;
+            return "Signo de parentesis que cierra.";
 
         case "{":
-            token = "Signo de llave que abre."; idtkn = 9;
-            break;
+            return "Signo de llave que abre.";
 
         case "}":
-            token = "Signo llave que cierra"; idtkn = 10;
-            break;
+            return "Signo llave que cierra";            
 
         case "int":
-            token = "Palabra Reservada, se utiliza para declara numeros enteros."; idtkn = 11;
-            break;
+            return "Palabra Reservada, se utiliza para declara numeros enteros.";
 
         case "float":
-            token = "Palabra Reservada, se utiliza para declara numeros con decimal."; idtkn = 12;
-            break;
+            return "Palabra Reservada, se utiliza para declara numeros con decimal.";            
 
         case "bool":
-            token = "Palabra Reservada, se utiliza en variables boolenas."; idtkn = 13;
-            break;
+            return "Palabra Reservada, se utiliza en variables boolenas.";            
 
         case "char":
-            token = "Palabra Reservada, se utiliza en variables tipo caracter."; idtkn = 14;
-            break;
+            return "Palabra Reservada, se utiliza en variables tipo caracter.";
 
         case "string":
-            token = "Palabra Reservada, se utiliza en  variables tipo cadena."; idtkn = 15;
-            break;
+            return "Palabra Reservada, se utiliza en  variables tipo cadena.";            
 
         case "String":
-            token = "Palabra Reservada, se utiliza en  variables tipo cadena."; idtkn = 15;
-            break;
-
+            return "Palabra Reservada, se utiliza en  variables tipo cadena.";
+            
         case ",":
-            token = "Signo de coma."; idtkn = 16;
-            break;
+            return "Signo de coma.";
 
         case ".":
-            token = "Signo de punto."; idtkn = 17;
-            break;
-
+            return "Signo de punto.";
+            
         case ";":
-            token = "Signo de punto y coma."; idtkn = 18;
-            break;
-
+            return "Signo de punto y coma.";
+            
         case "/":
-            token = "Signo de division."; idtkn = 19;
-            break;
+            return "Signo de division.";
 
         case "=":
-            token = "Signo igual."; idtkn = 20;
-            break;
+            return "Signo igual.";            
 
         case "==":
-             token = "Signo de operador."; idtkn = 21;
-             break;
+            return "Signo de operador.";             
 
         case ">":
-             token = "Signo de operador."; idtkn = 22;
-             break;
+            return "Signo de operador.";             
 
         case "<":
-             token = "Signo de operador."; idtkn = 23;
-             break;
+            return "Signo de operador.";             
 
         case "!=":
-             token = "Signo de operador."; idtkn = 24;
-             break;
+            return "Signo de operador.";             
 
         case "+":
-             token = "Signo de operador."; idtkn = 25;
-             break;
+            return "Signo de operador.";             
 
         case "-":
-             token = "Signo de operador."; idtkn = 26;
-             break;
+            return "Signo de operador.";             
 
         case "*":
-             token = "Signo de operador."; idtkn = 27;
-             break;
+            return "Signo de operador.";             
 
         case "Console":
-             token = "Palabra Reservada."; idtkn = 28;
-             break;
+            return "Palabra Reservada.";             
 
         case "WriteLine":
-             token = "Palabra Reservada."; idtkn = 29;
-             break;
+            return "Palabra Reservada.";
 
         case "[":
-                    token = "Signos de corchetes que abre."; idtkn = 30;
-                    break;
-
+            return "Signos de corchetes que abre.";
+            
         case "]":
-                    token = "Signo corchete que cierra."; idtkn = 31;
-                    break;
-
+            return "Signo corchete que cierra.";
+            
         case "new":
-                    token = "Palabra Reservada."; idtkn = 32;
-                    break;
-
+            return "Palabra Reservada.";
+            
         case "if":
-                    token = "Ciclo if."; idtkn = 33;
-                    break;
-
+            return "Ciclo if.";
+            
         case "else":
-                    token = "Ciclo if."; idtkn = 34;
-                    break;
-
+            return "Ciclo if.";
+            
         case "switch":
-                    token = "Sentencia Switch."; idtkn = 35;
-                    break;
-
+            return "Sentencia Switch.";
+            
         case "case":
-                    token = "Sentencia Switch."; idtkn = 36;
-                    break;
-
+            return "Sentencia Switch.";
+            
         case "break":
-                    token = "Sentencia Switch."; idtkn = 37;
-                    break;
-
+            return "Sentencia Switch.";
+            
         case "default":
-                    token = "Sentecia Switch."; idtkn = 38;
-                    break;
-
+            return "Sentecia Switch.";
+            
         case ":":
-            token = "Signo dos puntos."; idtkn = 39;
-            break;
-
+            return "Signo dos puntos.";
+            
         case "for":
-            token = "Ciclo for."; idtkn = 40;
-            break;
+            return "Ciclo for.";            
 
         case "<=":
-            token = "Operador."; idtkn = 41;
-            break;
-
+            return "Operador.";
+            
         case ">=":
-            token = "Operador."; idtkn = 42;
-            break;
-
+            return "Operador.";
+            
         case "while":
-            token = "Ciclo while."; idtkn = 43;
-            break;
-
+            return "Ciclo while.";
+            
         case "true":
-            token = "Palabra Reservada."; idtkn = 44;
-            break;
-
+            return "Palabra Reservada.";
+            
         case "false":
-            token = "Palabra Reservada."; idtkn = 45;
-            break;
-
+            return "Palabra Reservada.";
+            
         case "public":
-            token = "Palabra Reservada."; idtkn = 47;
-            break;
-
+            return "Palabra Reservada.";
+            
         case "void":
-            token = "Palabra Reservada."; idtkn = 49;
-            break;
-
+            return "Palabra Reservada.";
+            
         default:
-            token = "Cadena"; idtkn = 46;
-            break;
+            return "Cadena";            
+    }
+}
+
+AnalizarId(elemento)
+{
+    switch(elemento)
+    {
+        case "class":
+            return 2;
+            
+        case "static":
+            return 3;
+            
+        case "void":
+            return 4;
+            
+        case "Main":
+            return 5;
+            
+        case "(":
+            return 6;
+                          
+        case "args":
+            return 7;
+            
+        case ")":
+            return 8;
+            
+        case "{":
+            return 9;
+            
+        case "}":
+            return 10;
+            
+        case "int":
+            return 11;
+            
+        case "float":
+            return 12;
+            
+        case "bool":
+            return 13;
+            
+        case "char":
+            return 14;
+            
+        case "string":
+            return 15;
+            
+        case "String":
+            return 15;
+            
+        case ",":
+            return 16;
+            
+        case ".":
+            return 17;
+            
+        case ";":
+            return 18;
+            
+        case "/":
+            return 19;
+            
+        case "=":
+            return 20;
+            
+        case "==":
+            return 21;
+             
+        case ">":
+            return 22;
+             
+        case "<":
+            return 23;
+             
+        case "!=":
+            return 24;
+             
+        case "+":
+            return 25;
+             
+        case "-":
+            return 26;
+             
+        case "*":
+            return 27;
+             
+        case "Console":
+            return 28;
+             
+        case "WriteLine":
+            return 29;
+             
+        case "[":
+            return 30;
+            
+        case "]":
+            return 31;
+            
+        case "new":
+            return 32;
+            
+        case "if":
+            return 33;
+            
+        case "else":
+            return 34;
+            
+        case "switch":
+            return 35;
+            
+        case "case":
+            return 36;
+            
+        case "break":
+            return 37;
+            
+        case "default":
+            return 38;
+            
+        case ":":
+            return 39;
+            
+        case "for":
+            return 40;
+            
+        case "<=":
+            return 41;
+            
+        case ">=":
+            return 42;
+            
+        case "while":
+            return 43;
+            
+        case "true":
+            return 44;
+            
+        case "false":
+            return 45;
+            
+        case "public":
+            return 47;
+            
+        case "void":
+            return 49;
+            
+        default:
+            return 46;
     }
 }
 
