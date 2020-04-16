@@ -44,3 +44,10 @@ function destroyClickedElement(event)
 {
     document.body.removeChild(event.target);
 }
+
+function analizar(texto){
+    let ana = new Lexico();
+
+    ana.Scanner(texto.value);
+
+}

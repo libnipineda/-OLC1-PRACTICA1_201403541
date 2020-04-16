@@ -1,42 +1,31 @@
-class Token
-{
-    constructor(numero,lexema, idtkn, tkn, fila, columna)
-    {
+class Token {
+    constructor(numero, lexema, idtkn, tkn, fila, columna) {
         this.numero = numero;
         this.lexema = lexema;
         this.idtkn = idtkn;
         this.tkn = tkn;
         this.fila = fila;
         this.columna = columna;
-
-        this.listaToken = [];
     }
 }
 
-class Errores
+class Lexico
 {
-    constructor(enumero, tipo, elexema, descripcion, efila, ecolumna)
+    constructor()
     {
-        this.enumero = enumero;
-        this.tipo = tipo;
-        this.elexema = elexema;
-        this.descripcion = descripcion;
-        this.efila = efila;
-        this.ecolumna = ecolumna;
-
+        this.listaToken = [];
         this.listaError = [];
+        var token = "";
     }
-}
-
-var numero = 0, estado = 0, idtkn = 0, fila = 1, columna = 1, tempfila = 0, tempcolumna = 0, indice = 0;
-var concatenar = "", caracter = '', token;
-
-
+    
 Scanner(cadena)
 {
     this.cadena += "\n   ";
     this.listaToken = [];
-    this.listaError = [];    
+    this.listaError = [];
+
+    var numero = 0, estado = 0, idtkn = 0, fila = 1, columna = 1, tempfila = 0, tempcolumna = 0, indice = 0;
+    var concatenar = "", caracter = '';
 
     while(numero < this.cadena.length)
     {
@@ -88,14 +77,14 @@ Scanner(cadena)
                 }
                 else
                 {
-                    this.listaError.push(new Errores(numero,"Lexico",concatenar,"valor desconocido.",tempfila,tempcolumna));
+                    this.listaError.push(numero,"Lexico",concatenar,"valor desconocido.",tempfila,tempcolumna);
                     indice++; numero++; columna++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 1 ------------------------------
             case 1:
-                if(caracter.fromCharCode(46))
+                if(caracter == String.fromCharCode(46))
                 {
                     estado = 7; concatenar += caracter; numero++; columna++;
                 }
@@ -106,16 +95,18 @@ Scanner(cadena)
                 else
                 {
                     estado = 0;
-                    this.listaToken(new Token(indice,concatenar,1,"Numero",tempfila, tempcolumna));
+                    let temporal = new Token(indice,concatenar,1,"Numero",tempfila, tempcolumna)
+                    this.listaToken.push(temporal);
                     indice++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 2 ------------------------------
             case 2:
-                AnalizarTkn(concatenar);
+                this.AnalizarTkn(concatenar);
                 estado = 0;
-                this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                let temporal = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna)
+                this.listaToken.push(temporal);
                 indice++; concatenar = "";
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -135,16 +126,17 @@ Scanner(cadena)
                 }
                 else
                 {
-                    AnalizarTkn(concatenar);
+                    this.AnalizarTkn(concatenar);
                     estado = 0;
-                    this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                    let temporal = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    this.listaToken.push(temporal);
                     indice++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 4 ------------------------------
             case 4:
-                if(caracter.fromCharCode(34))
+                if(caracter == String.fromCharCode(34))
                 {
                     estado =12; concatenar += caracter; columna++; numero++;
                 }
@@ -156,7 +148,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 5 ------------------------------
             case 5:
-                if(caracter.fromCharCode(39))
+                if(caracter == String.fromCharCode(39))
                 {
                     estado = 12; concatenar += caracter; columna++; numero++;
                 }
@@ -168,15 +160,16 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 6 ------------------------------
             case 6:
-                if(caracter.fromCharCode(47))
+                if(caracter == String.fromCharCode(47))
                 {
                     estado = 10; concatenar += caracter; columna++; numero++;                    
                 }
                 else
                 {
-                    AnalizarTkn(concatenar);
+                    this.AnalizarTkn(concatenar);
                     estado = 0;
-                    this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                    let aux = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    this.listaToken.push(aux);
                     indice++; concatenar = "";
                 }
                 break;
@@ -191,7 +184,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 8 ------------------------------
             case 8:
-                if(caracter.fromCharCode(34))
+                if(caracter == String.fromCharCode(34))
                 {
                     estado = 12; concatenar += caracter; columna++; numero++;
                 }
@@ -203,7 +196,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 9 ------------------------------    
             case 9:
-                if(caracter.fromCharCode(39))
+                if(caracter == String.fromCharCode(39))
                 {
                     estado = 12; concatenar += caracter; columna++; numero++;
                 }
@@ -215,7 +208,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 10 ------------------------------                
             case 10:
-                if(caracter.fromCharCode(42))
+                if(caracter == String.fromCharCode(42))
                 {
                     estado = 13; concatenar += caracter; columna++; numero++;
                 }
@@ -234,22 +227,24 @@ Scanner(cadena)
                 else
                 {
                     estado = 0;
-                    this.listaToken(new Token(indice,concatenar,48,"Decimal",tempfila,tempcolumna));
+                    let aux = new Token(indice,concatenar,48,"Decimal",tempfila,tempcolumna);
+                    this.listaToken.push(aux);
                     indice++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 12 ------------------------------
             case 12:
-                AnalizarTkn(concatenar);
+                this.AnalizarTkn(concatenar);
                 estado = 0;
-                this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                let temporal1 = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                this.listaToken.push(temporal1);
                 indice++; concatenar = "";
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 13 ------------------------------
             case 13:
-                if(caracter.fromCharCode(10))
+                if(caracter == String.fromCharCode(10))
                 {
                     estado = 14; concatenar += caracter; columna++; numero++;
                 }
@@ -261,15 +256,16 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 14 ------------------------------
             case 14:
-                if(caracter.fromCharCode(42))
+                if(caracter == String.fromCharCode(42))
                 {
                     estado = 15; concatenar += caracter; columna++; numero++;
                 }
-                else if(caracter.fromCharCode(10))
+                else if(caracter == String.fromCharCode(10))
                 {
-                    AnalizarTkn(concatenar);
+                    this.AnalizarTkn(concatenar);
                     estado = 0;
-                    this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                    let aux = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                    this.listaToken.push(aux);
                     indice++; concatenar = "";
                 }
                 else
@@ -280,7 +276,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 15 ------------------------------
             case 15:
-                if(caracter.fromCharCode(47))
+                if(caracter == String.fromCharCode(47))
                 {
                     estado = 16; concatenar += caracter; columna++; numero++;
                 }
@@ -288,7 +284,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 16 ------------------------------
             case 16:
-                if(caracter.fromCharCode(47))
+                if(caracter == String.fromCharCode(47))
                 {
                     estado = 17; concatenar += caracter; columna++; numero++;
                 }
@@ -296,9 +292,10 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 17 ------------------------------
             case 17:
-                AnalizarTkn(concatenar);
+                this.AnalizarTkn(concatenar);
                 estado = 0;
-                this.listaToken(new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna));
+                let temporal2 = new Token(indice,concatenar,idtkn,token,tempfila,tempcolumna);
+                this.listaToken.push(temporal2);
                 indice++; concatenar = "";
                 break;    
         }
@@ -316,53 +313,6 @@ Scanner(cadena)
     {
         console.log(this.listaError[i]);
     }
-}
-
-
-EsLetra(caracter)
-{
-    if(caracter >= 'A' &  caracter <= 'Z')
-      return true;
-    if(caracter >= 'a' & caracter <='z')
-      return true;
-    if (caracter == 'ñ' | caracter == 'Ñ')
-      return true;
-  return false;
-}
-
-EsNumero(caracter)
-{
-    if (caracter >= '0' & caracter <= '9')
-    {
-        return true;
-    }
-    return false;
-}
-
-EsSimbolo(caracter)
-{
-    switch(caracter)
-    {
-        case '(':
-        case ')':
-        case '{':
-        case '}':
-        case ',':
-        case '.':
-        case ';':
-        case '=':
-        case '>':
-        case '<':
-        case '+':
-        case '-':
-        case '*':
-        case '[':
-        case ']':
-        case ':':
-        case '!':  return true;
-        break;
-    }
-    return false;
 }
 
 AnalizarTkn(valorTkn)
@@ -522,43 +472,91 @@ AnalizarTkn(valorTkn)
                     break;
 
         case ":":
-                    token = "Signo dos puntos."; idtkn = 39;
-                    break;
+            token = "Signo dos puntos."; idtkn = 39;
+            break;
 
-                case "for":
-                    token = "Ciclo for."; idtkn = 40;
-                    break;
+        case "for":
+            token = "Ciclo for."; idtkn = 40;
+            break;
 
-                case "<=":
-                    token = "Operador."; idtkn = 41;
-                    break;
+        case "<=":
+            token = "Operador."; idtkn = 41;
+            break;
 
-                case ">=":
-                    token = "Operador."; idtkn = 42;
-                    break;
+        case ">=":
+            token = "Operador."; idtkn = 42;
+            break;
 
-                case "while":
-                    token = "Ciclo while."; idtkn = 43;
-                    break;
+        case "while":
+            token = "Ciclo while."; idtkn = 43;
+            break;
 
-                case "true":
-                    token = "Palabra Reservada."; idtkn = 44;
-                    break;
+        case "true":
+            token = "Palabra Reservada."; idtkn = 44;
+            break;
 
-                case "false":
-                    token = "Palabra Reservada."; idtkn = 45;
-                    break;
+        case "false":
+            token = "Palabra Reservada."; idtkn = 45;
+            break;
 
-                case "public":
-                    token = "Palabra Reservada."; idtkn = 47;
-                    break;
+        case "public":
+            token = "Palabra Reservada."; idtkn = 47;
+            break;
 
-                case "void":
-                    token = "Palabra Reservada."; idtkn = 49;
-                    break;
+        case "void":
+            token = "Palabra Reservada."; idtkn = 49;
+            break;
 
-                default:
-                    token = "Cadena"; idtkn = 46;
-                    break;
+        default:
+            token = "Cadena"; idtkn = 46;
+            break;
     }
+}
+
+EsLetra(caracter)
+{
+    if(caracter >= 'A' &  caracter <= 'Z')
+      return true;
+    if(caracter >= 'a' & caracter <='z')
+      return true;
+    if (caracter == 'ñ' | caracter == 'Ñ')
+      return true;
+  return false;
+}
+
+EsNumero(caracter)
+{
+    if (caracter >= '0' & caracter <= '9')
+    {
+        return true;
+    }
+    return false;
+}
+
+EsSimbolo(caracter)
+{
+    switch(caracter)
+    {
+        case '(':
+        case ')':
+        case '{':
+        case '}':
+        case ',':
+        case '.':
+        case ';':
+        case '=':
+        case '>':
+        case '<':
+        case '+':
+        case '-':
+        case '*':
+        case '[':
+        case ']':
+        case ':':
+        case '!':  return true;
+        break;
+    }
+    return false;
+}
+
 }
