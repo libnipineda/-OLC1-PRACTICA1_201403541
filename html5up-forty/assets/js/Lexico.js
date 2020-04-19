@@ -1,11 +1,20 @@
 class Token {
-    constructor(numero, lexema, idtkn, tkn, fila, columna) {
-        this.numero = numero;
+    constructor(lexema, idtkn, tkn, fila, columna) {
         this.lexema = lexema;
         this.idtkn = idtkn;
         this.tkn = tkn;
         this.fila = fila;
         this.columna = columna;
+    }
+}
+
+class Errores{
+    constructor(tipo,elexema,descripcion,efila,ecolumna){
+        this.tipo = tipo;
+        this.elemento = elexema;
+        this.descripcion = descripcion;
+        this.efila = efila;
+        this.ecolumna = ecolumna;
     }
 }
 
@@ -19,25 +28,27 @@ class Lexico
     
 Scanner(cadena)
 {
-    this.cadena += "\n   ";
+    cadena += "\n   ";
     this.listaToken = [];
     this.listaError = [];
 
-    var numero = 0, estado = 0, idtkn = 0, fila = 1, columna = 1, tempfila = 0, tempcolumna = 0, indice = 0;
-    var concatenar = "", caracter = '';
+    var numero = 0, estado = 0, fila = 1, columna = 1, tempfila = 0, tempcolumna = 0;
+    var concatenar = "";
+    var caracter = ' ';
 
-    while(numero < this.cadena.length)
+    while(numero < cadena.length)
     {
-        caracter = this.cadena[numero];
+        caracter = cadena[numero];
 
         switch(estado)
         {
     //------------------------------ Estado 0 ------------------------------
             case 0:
+                concatenar = "";
                 tempfila = fila;
                 tempcolumna = columna;
 
-                if(cadena == '\n' || caracter == '\t' || caracter == '\r' || caracter == ' ')
+                if(caracter == '\n' || caracter == '\t' || caracter == '\r' || caracter == ' ')
                 {
                     if(caracter == '\n')
                     {
@@ -52,60 +63,84 @@ Scanner(cadena)
                 }
                 else if(this.EsNumero(caracter))
                 {
-                    estado = 1; concatenar += caracter; numero++; columna++;
+                    estado = 1; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else if(this.EsSimbolo(caracter))
                 {
-                    estado = 2; concatenar += caracter; numero++; columna++;
+                    estado = 2; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else if(this.EsLetra(caracter))
                 {
-                    estado = 3; concatenar += caracter; numero++; columna++;
+                    estado = 3; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else if(caracter == String.fromCharCode(34)) // signo "
                 {
-                    estado = 4; concatenar += caracter;  numero++; columna++;
+                    estado = 4; 
+                    concatenar += caracter;  
+                    numero++; 
+                    columna++;
                 }
                 else if(caracter == String.fromCharCode(39)) // signo '
                 {
-                    estaedo = 5; concatenar += caracter; numero++; columna++;
+                    estaedo = 5; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else if(caracter == '/')
                 {
-                    estado = 6; concatenar += caracter; numero++; columna++;
+                    estado = 6; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else
                 {
-                    this.listaError.push(numero,"Lexico",concatenar,"valor desconocido.",tempfila,tempcolumna);
-                    indice++; numero++; columna++; concatenar = "";
+                    let erroreslex = new Errores("Error Lexico",concatenar,"valor desconocido.",tempfila,tempcolumna);
+                    this.listaError.push(erroreslex);
+                    numero++; 
+                    columna++;
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 1 ------------------------------
-            case 1:
-                if(caracter == String.fromCharCode(46))
-                {
-                    estado = 7; concatenar += caracter; numero++; columna++;
-                }
+            case 1:                
                 if(this.EsNumero(caracter))
                 {
-                    estado = 1; concatenar += caracter; numero++; columna++;
+                    estado = 1; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
+                }
+                else if(caracter == String.fromCharCode(46))
+                {
+                    estado = 7; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else
                 {
                     estado = 0;
-                    let temporal = new Token(indice,concatenar,1,"Numero",tempfila, tempcolumna)
+                    let temporal = new Token(concatenar,1,"Numero",tempfila, tempcolumna);
                     this.listaToken.push(temporal);
-                    indice++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 2 ------------------------------
             case 2:
                 estado = 0;
-                let temporal = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna)
+                let temporal = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna)
                 this.listaToken.push(temporal);
-                indice++; concatenar = "";
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 3 ------------------------------
@@ -126,9 +161,8 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let temporal = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
+                    let temporal = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                     this.listaToken.push(temporal);
-                    indice++; concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -166,9 +200,9 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let aux = new Token(indice,concatenar,50,"signo /",tempfila,tempcolumna);
+                    let aux = new Token(concatenar,50,"signo /",tempfila,tempcolumna);
                     this.listaToken.push(aux);
-                    indice++; concatenar = "";
+                    concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -225,9 +259,9 @@ Scanner(cadena)
                 else
                 {
                     estado = 0;
-                    let aux = new Token(indice,concatenar,48,"Decimal",tempfila,tempcolumna);
+                    let aux = new Token(concatenar,48,"Decimal",tempfila,tempcolumna);
                     this.listaToken.push(aux);
-                    indice++; concatenar = "";
+                    concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -235,9 +269,9 @@ Scanner(cadena)
             case 12:
                 this.AnalizarTkn(concatenar);
                 estado = 0;
-                let temporal1 = new Token(indice,concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
+                let temporal1 = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                 this.listaToken.push(temporal1);
-                indice++; concatenar = "";
+                concatenar = "";
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 13 ------------------------------
@@ -262,9 +296,9 @@ Scanner(cadena)
                 {
                     this.AnalizarTkn(concatenar);
                     estado = 0;
-                    let aux = new Token(indice,concatenar,51,"Comentario",tempfila,tempcolumna);
+                    let aux = new Token(concatenar,51,"Comentario",tempfila,tempcolumna);
                     this.listaToken.push(aux);
-                    indice++; concatenar = "";
+                    concatenar = "";
                 }
                 else
                 {
@@ -292,9 +326,9 @@ Scanner(cadena)
             case 17:
                 this.AnalizarTkn(concatenar);
                 estado = 0;
-                let temporal2 = new Token(indice,concatenar,52,"Comentario Multilinea",tempfila,tempcolumna);
+                let temporal2 = new Token(concatenar,52,"Comentario Multilinea",tempfila,tempcolumna);
                 this.listaToken.push(temporal2);
-                indice++; concatenar = "";
+                concatenar = "";
                 break;    
         }
     }
@@ -622,21 +656,19 @@ AnalizarId(elemento)
 
 EsLetra(caracter)
 {
-    if(caracter >= 'A' &  caracter <= 'Z')
-      return true;
-    if(caracter >= 'a' & caracter <='z')
-      return true;
-    if (caracter == 'ñ' | caracter == 'Ñ')
-      return true;
+  if(caracter >= 'A' &  caracter <= 'Z')
+    return true;
+  if(caracter >= 'a' & caracter <='z')
+    return true;
+  if (caracter == 'ñ' | caracter == 'Ñ')
+    return true;
   return false;
 }
 
 EsNumero(caracter)
 {
     if (caracter >= '0' & caracter <= '9')
-    {
-        return true;
-    }
+       return true;
     return false;
 }
 

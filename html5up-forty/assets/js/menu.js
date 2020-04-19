@@ -45,9 +45,10 @@ function destroyClickedElement(event)
     document.body.removeChild(event.target);
 }
 
-function analizar(texto){
+function analizar(){
     let ana = new Lexico();
 
-    ana.Scanner(texto.value);
+    var archivo = document.getElementById("editor").value;
 
+    ana.Scanner(archivo);
 }

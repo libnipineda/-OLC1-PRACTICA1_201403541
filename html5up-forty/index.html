@@ -61,12 +61,14 @@
 									<li><input id="archivos" type="file" size="50" onchange="processFiles(this.files)"></li>
 									<li><a onclick="Guardar()" class="button primary small">Guardar Archivo</a></li>
 								</ul>
-								<label for="message">CODIGO EN C#</label>
-									<textarea id="editor" rows="10" cols="80"></textarea>
+									<div class="field">
+										<label for="message">CODIGO EN C#</label>
+										<textarea name = "editor" id = "editor" rows="25"></textarea>
+									</div>
 									<br>
 								<ul class="actions">
 									<p>
-										<li><a onclick="analizar(editor)" class="button primary small">TRADUCTOR</a></li>
+										<li><a onclick="analizar()" class="button primary small">TRADUCTOR</a></li>
 									</p>
 								</ul>
 							</div>
