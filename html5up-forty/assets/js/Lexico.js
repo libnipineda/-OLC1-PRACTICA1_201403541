@@ -1,11 +1,12 @@
 class Token {
+
     constructor(lexema, idtkn, tkn, fila, columna) {
         this.lexema = lexema;
         this.idtkn = idtkn;
         this.tkn = tkn;
         this.fila = fila;
         this.columna = columna;
-    }
+    }    
 }
 
 class Errores{
@@ -25,10 +26,11 @@ class Lexico
         this.listaToken = [];
         this.listaError = [];
     }
-    
-Scanner(cadena)
+}
+
+function Scanner(cadena)
 {
-    cadena += "\n   ";
+    //cadena += "\n   ";
     this.listaToken = [];
     this.listaError = [];
 
@@ -36,8 +38,8 @@ Scanner(cadena)
     var concatenar = "";
     var caracter = ' ';
 
-    while(numero < cadena.length)
-    {
+    //while(numero < cadena.length)
+    for(i = 0; i < cadena.length; i++){
         caracter = cadena[numero];
 
         switch(estado)
@@ -63,10 +65,10 @@ Scanner(cadena)
                 }
                 else if(this.EsNumero(caracter))
                 {
-                    estado = 1; 
-                    concatenar += caracter; 
-                    numero++; 
-                    columna++;
+                    estado = 1;
+                    concatenar += caracter;
+                    numero++;
+                    columna++;                    
                 }
                 else if(this.EsSimbolo(caracter))
                 {
@@ -91,7 +93,7 @@ Scanner(cadena)
                 }
                 else if(caracter == String.fromCharCode(39)) // signo '
                 {
-                    estaedo = 5; 
+                    estado = 5; 
                     concatenar += caracter; 
                     numero++; 
                     columna++;
@@ -109,22 +111,23 @@ Scanner(cadena)
                     this.listaError.push(erroreslex);
                     numero++; 
                     columna++;
+                    concatenar = "";
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 1 ------------------------------
             case 1:                
-                if(this.EsNumero(caracter))
-                {
-                    estado = 1; 
-                    concatenar += caracter; 
-                    numero++; 
-                    columna++;
-                }
-                else if(caracter == String.fromCharCode(46))
+                if(this.EsPunto(caracter))
                 {
                     estado = 7; 
                     concatenar += caracter; 
+                    numero++;
+                    columna++;
+                }
+                else if(this.EsNumero(caracter))
+                {
+                    estado = 1; 
+                    concatenar += caracter;
                     numero++; 
                     columna++;
                 }
@@ -138,7 +141,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 2 ------------------------------
             case 2:
-                estado = 0;
+                estado = estado - 1; estado = 0;
                 let temporal = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna)
                 this.listaToken.push(temporal);
                 break;
@@ -147,20 +150,28 @@ Scanner(cadena)
             case 3:
                 if(this.EsLetra(caracter))
                 {
-                    estado = 3; concatenar += caracter; columna++; numero++;
+                    estado = 3; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 else if(this.EsNumero(caracter))
                 {
-                    estado = 3; concatenar += caracter; columna++; numero++;
+                    estado = 3; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 else if(caracter == String.fromCharCode(95))
                 {
-                    estado = 3; concatenar += caracter; columna++; numero++;
+                    estado = 3; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 else
                 {
-                    this.AnalizarTkn(concatenar);
-                    estado = 0;
+                    estado = estado - 1; estado = 0;
                     let temporal = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                     this.listaToken.push(temporal);
                 }
@@ -170,11 +181,17 @@ Scanner(cadena)
             case 4:
                 if(caracter == String.fromCharCode(34))
                 {
-                    estado =12; concatenar += caracter; columna++; numero++;
+                    estado =12; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 else
                 {
-                    estado = 8; concatenar += caracter; columna++; numero++;
+                    estado = 8; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -182,11 +199,17 @@ Scanner(cadena)
             case 5:
                 if(caracter == String.fromCharCode(39))
                 {
-                    estado = 12; concatenar += caracter; columna++; numero++;
+                    estado = 12; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 else
                 {
-                    estado = 9; concatenar += caracter; columna++; numero++;
+                    estado = 9; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -194,12 +217,14 @@ Scanner(cadena)
             case 6:
                 if(caracter == String.fromCharCode(47))
                 {
-                    estado = 10; concatenar += caracter; columna++; numero++;                    
+                    estado = 10; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 else
                 {
-                    this.AnalizarTkn(concatenar);
-                    estado = 0;
+                    estado = estado - 1; estado = 0;
                     let aux = new Token(concatenar,50,"signo /",tempfila,tempcolumna);
                     this.listaToken.push(aux);
                     concatenar = "";
@@ -210,7 +235,10 @@ Scanner(cadena)
             case 7:
                 if(this.EsNumero(caracter))
                 {
-                    estado = 11; concatenar += cadena; columna++; numero++;
+                    estado = 11; 
+                    concatenar += cadena; 
+                    numero++;
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -218,11 +246,17 @@ Scanner(cadena)
             case 8:
                 if(caracter == String.fromCharCode(34))
                 {
-                    estado = 12; concatenar += caracter; columna++; numero++;
+                    estado = 12; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 else
                 {
-                    estado = 8; concatenar += caracter; columna++; numero++;
+                    estado = 8; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -230,11 +264,17 @@ Scanner(cadena)
             case 9:
                 if(caracter == String.fromCharCode(39))
                 {
-                    estado = 12; concatenar += caracter; columna++; numero++;
+                    estado = 12; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else
                 {
-                    estado = 9; concatenar += caracter; columna++; numero++;
+                    estado = 9; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -242,11 +282,17 @@ Scanner(cadena)
             case 10:
                 if(caracter == String.fromCharCode(42))
                 {
-                    estado = 13; concatenar += caracter; columna++; numero++;
+                    estado = 13; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 else
                 {
-                    estado = 14; concatenar += caracter; columna++; numero++;
+                    estado = 14; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -254,11 +300,14 @@ Scanner(cadena)
             case 11:
                 if(this.EsNumero(caracter))
                 {
-                    estado = 11; concatenar += caracter; columna++; numero++;
+                    estado = 11; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++; 
                 }
                 else
                 {
-                    estado = 0;
+                    estado = estado - 1; estado = 0;
                     let aux = new Token(concatenar,48,"Decimal",tempfila,tempcolumna);
                     this.listaToken.push(aux);
                     concatenar = "";
@@ -267,8 +316,7 @@ Scanner(cadena)
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 12 ------------------------------
             case 12:
-                this.AnalizarTkn(concatenar);
-                estado = 0;
+                estado = estado - 1; estado = 0;
                 let temporal1 = new Token(concatenar,this.AnalizarId(concatenar),this.AnalizarTkn(concatenar),tempfila,tempcolumna);
                 this.listaToken.push(temporal1);
                 concatenar = "";
@@ -278,11 +326,17 @@ Scanner(cadena)
             case 13:
                 if(caracter == String.fromCharCode(10))
                 {
-                    estado = 14; concatenar += caracter; columna++; numero++;
+                    estado = 14; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++;
                 }
                 else
                 {
-                    estado = 13; concatenar += caracter; columna++; numero++;
+                    estado = 13; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -293,16 +347,18 @@ Scanner(cadena)
                     estado = 15; concatenar += caracter; columna++; numero++;
                 }
                 else if(caracter == String.fromCharCode(10))
-                {
-                    this.AnalizarTkn(concatenar);
-                    estado = 0;
+                {                    
+                    estado = estado - 1; estado = 0;
                     let aux = new Token(concatenar,51,"Comentario",tempfila,tempcolumna);
                     this.listaToken.push(aux);
                     concatenar = "";
                 }
                 else
                 {
-                    estado = 14; concatenar += caracter; columna++; numero++;
+                    estado = 14; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -310,7 +366,10 @@ Scanner(cadena)
             case 15:
                 if(caracter == String.fromCharCode(47))
                 {
-                    estado = 16; concatenar += caracter; columna++; numero++;
+                    estado = 16; 
+                    concatenar += caracter; 
+                    numero++; 
+                    columna++; 
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
@@ -318,14 +377,16 @@ Scanner(cadena)
             case 16:
                 if(caracter == String.fromCharCode(47))
                 {
-                    estado = 17; concatenar += caracter; columna++; numero++;
+                    estado = 17; 
+                    concatenar += caracter; 
+                    numero++;
+                    columna++;
                 }
                 break;
     //------------------------------ FIN ESTADO ------------------------------
     //------------------------------ Estado 17 ------------------------------
             case 17:
-                this.AnalizarTkn(concatenar);
-                estado = 0;
+                estado = estado - 1; estado = 0;
                 let temporal2 = new Token(concatenar,52,"Comentario Multilinea",tempfila,tempcolumna);
                 this.listaToken.push(temporal2);
                 concatenar = "";
@@ -333,6 +394,8 @@ Scanner(cadena)
         }
     }
 
+    alert("Analisis Lexico Concluido.");
+    /*
     console.log("//////////////////////");
     console.log("tokens:");
     if(this.listaToken.length == 0)
@@ -351,10 +414,10 @@ Scanner(cadena)
     for(var i = 0; i < this.listaError.length; i++)
     {
         console.log(this.listaError[i]);
-    }
+    }*/    
 }
 
-AnalizarTkn(valorTkn)
+function AnalizarTkn(valorTkn)
 {
     switch(valorTkn)
     {
@@ -504,7 +567,7 @@ AnalizarTkn(valorTkn)
     }
 }
 
-AnalizarId(elemento)
+function AnalizarId(elemento)
 {
     switch(elemento)
     {
@@ -654,7 +717,7 @@ AnalizarId(elemento)
     }
 }
 
-EsLetra(caracter)
+function EsLetra(caracter)
 {
   if(caracter >= 'A' &  caracter <= 'Z')
     return true;
@@ -665,14 +728,14 @@ EsLetra(caracter)
   return false;
 }
 
-EsNumero(caracter)
+function EsNumero(caracter)
 {
     if (caracter >= '0' & caracter <= '9')
        return true;
     return false;
 }
 
-EsSimbolo(caracter)
+function EsSimbolo(caracter)
 {
     switch(caracter)
     {
@@ -698,4 +761,76 @@ EsSimbolo(caracter)
     return false;
 }
 
+function EsPunto(caracter)
+{
+    if(caracter == '.')
+      return true;
+    return false;
+}
+
+function vertokens()
+{
+    console.log("//////////////////////");
+    if(Token.length == 0)
+    {
+        console.log("No hay valores en la lista");
+    }
+    else
+    {
+        console.log("tokens:");
+        for (var i = 0; i < this.listaToken.length; i++) {
+            console.log(this.listaToken[i]);
+            ReporteTokns(this.listaToken[i]);
+        }
+    }
+}
+
+function ReporteTokns(ListaA)
+{
+    if(Token.length == 0)
+    {
+        alert("No hay valores en la lista");
+    }
+    else
+    {
+        var myTableDiv = document.getElementById("TablaTkn")
+        var table = document.createElement('table')
+        var tablebody = document.createElement('tbody')
+
+        table.border = '1'
+        table.appendChild(tablebody);
+
+        var heading = new Array();
+        heading[0] = "Lexema"
+        heading[1] = "Id"
+        heading[2] = "Token"
+        heading[3] = "Fila"
+        heading[4] = "Columna"
+        
+        var tr = document.createElement('tr');
+        tablebody.appendChild(tr);
+        
+        // Columnas de la tabla
+        for(i = 0; i < heading.length; i++)
+        {
+            var th = document.createElement('th')
+            th.width = '75';
+            th.appendChild(document.createTextNode(heading[i]));
+            tr.appendChild(th);
+        }
+
+        // Filas de la tabla
+        for(var i = 0; i < ListaA.length; i++)
+        {
+            var tr = document.createElement('tr');
+            for(j = 0; j < ListaA[i].length; j++)
+            {
+                var td = document.createElement('td');
+                td.appendChild(document.createTextNode(this.listaToken[i][j]));
+                tr.appendChild(td)
+            }
+            tablebody.appendChild(tr);
+        }
+        myTableDiv.appendChild(table);
+    }    
 }

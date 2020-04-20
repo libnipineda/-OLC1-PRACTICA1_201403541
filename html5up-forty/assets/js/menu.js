@@ -46,9 +46,18 @@ function destroyClickedElement(event)
 }
 
 function analizar(){
-    let ana = new Lexico();
+//  let ana = new Lexico();
 
     var archivo = document.getElementById("editor").value;
 
-    ana.Scanner(archivo);
+//    ana.Scanner(archivo);
+    Scanner(archivo);
+}
+
+function addTable()
+{
+    //let ana = new Lexico();
+
+    //ana.vertokns();
+    vertokens();    
 }
