@@ -810,7 +810,7 @@ function vertokens()
         json = JSON.stringify(list);
         var obj = JSON.parse(json);
         
-        $("#res").text('' + json);
+        $("#ReporteT").text('' + json);
         Guardarjson();
     }
     
@@ -868,10 +868,10 @@ function ReporteTokns(ListaA)
 
 function Guardarjson(){
 var escribir = document.getElementById("res").value;
+//text/plain
+    var archivoblob = new Blob([escribir], {type:'json'});
 
-    var archivoblob = new Blob([escribir], {type:'text/plain'});
-
-    var nombreguardar = "Tokens.txt";
+    var nombreguardar = "Tokens.json";
 
 
     var dowloadlink = document.createElement("a");

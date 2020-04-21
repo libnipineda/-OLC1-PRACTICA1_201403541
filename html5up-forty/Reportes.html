@@ -46,9 +46,11 @@
 									para la salida html de la pagina<br />
 								</p>
 							</div>
-							<ul class="actions small">
-								<li><a onclick="addTable()" class="button primary small">Ver Reportes</a></li>
-							</ul>
+							<div class="container">
+								<div class="section">
+									<button class="btn" id="boton">Ver Reportes</button>
+								</div>
+							</div>
 						</div>
 					</section>
 
@@ -62,7 +64,21 @@
 										<h2>Tabla de Token's</h2>
 									</header>
 									<!-- Table -->
-									<div class="table-wrapper" name="TablaTkn" id="TablaTkn">
+									<div class="table-wrapper" id="TablaTkn">
+										<table>
+											<thead>
+												<tr>
+													<th>Lexema</th>
+													<th>Id</th>
+													<th>Token</th>
+													<th>Fila</th>
+													<th>Columna</th>
+												</tr>
+											</thead>
+											<tbody id="Table">
+												
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</section>
