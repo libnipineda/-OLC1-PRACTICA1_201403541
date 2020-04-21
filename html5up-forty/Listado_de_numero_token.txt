@@ -45,5 +45,4 @@
 44 -> true
 45 -> false
 46 -> cadena
-47 -> graficarVector
 48 -> decimal
