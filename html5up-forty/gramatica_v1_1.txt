@@ -1,7 +1,8 @@
-VERSION 1.1 DE GRAMATICA PROYECTO 2 TRADUCTOR DE C# A PYTHON
+VERSION 1.1 DE GRAMATICA PRACTICA 2 TRADUCTOR DE C# A PYTHON
 ------------------------------------------------------------
 <INICIO> := class cadena {<ESTRUCTURA>}
 <ESTRUCTURA> := static void Main(string[] args){<INSTRUCCION>}
+              | void Main(){<INSTRUCCION>}
 <INSTRUCCION> := <DECLARACION> <INSTRUCCION>
                | <IMPRIMIR> <INSTRUCCION>
                | <SWITCH> <INSTRUCCION>

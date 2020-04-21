@@ -1,4 +1,4 @@
-document.querySelector("#boton").addEventListener('click', CargarJson());
+//document.querySelector("#boton").addEventListener('click', CargarJson);
 
 function processFiles(files)
 {
@@ -63,20 +63,42 @@ function addTable()
 
 function CargarJson()
 {
-    //console.log("prueba");
     // C://Users//libni//Downloads//Tokens.json
+    var path = 'C://Users//libni//Downloads//Tokens.json';
+
     const xhttp = new XMLHttpRequest();
 
-    xhttp.open('GET','file:///C://Users//libni//Downloads//Tokens.json',false);
-//    xhttp.open('GET','Tokens.json"',true);
-    xhttp.send(null);
-    if(this.status == 0)
-    {
-        console.log(this.responseText);
-
-        let datos = JSON.parse(this.responseText);
-
-    }    
+    //xhttp.open('GET',path,true);
+    xhttp.open('GET','file:///C:/Users/libni/Downloads/Tokens.json',true);
+    var datajson = xhttp.responseText;
+    xhttp.onreadystatechange = function(){
+        if(xhttp.readyState == 4 && xhttp.status == 200 || xhttp.status == 0)
+        {
+           //let datos = JSON.stringify(this.responseText);
+           var modificar = JSON.parse(JSON.stringify(datajson));
+           //console.log(modificar);
+           let respuesta = document.querySelector('#Table');
+           respuesta.innerHTML = '';
+           for(let item in modificar)
+           {
+               //console.log(item.lexema);
+               respuesta.innerHTML += `
+                 <tr>
+                    <td>${item.lexema}</td>
+                    <td>${item.id}</td>
+                    <td>${item.token}</td>
+                    <td>${item.fila}</td>
+                    <td>${item.columna}</td>
+                 </tr>
+               `
+           }
+        }
+        else
+        {
+            alert("Error cargar pagina\n");
+        }
+    };
+    xhttp.send();
 }
 
 /*

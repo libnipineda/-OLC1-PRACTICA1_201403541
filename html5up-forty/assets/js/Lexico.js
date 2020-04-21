@@ -811,6 +811,7 @@ function vertokens()
         var obj = JSON.parse(json);
         
         $("#ReporteT").text('' + json);
+        $("#res").text('' + json);
         Guardarjson();
     }
     
