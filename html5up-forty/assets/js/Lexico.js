@@ -777,12 +777,43 @@ function vertokens()
     }
     else
     {
+        var arrayLexema = new Array();
+        var arrayIdtkn = new Array();
+        var arrayTkn = new Array();
+        var arrayFila = new Array();
+        var arrayColumna = new Array();
+
         console.log("tokens:");
         for (var i = 0; i < this.listaToken.length; i++) {
             console.log(this.listaToken[i]);
-            ReporteTokns(this.listaToken[i]);
+            //ReporteTokns(this.listaToken[i]);
+            arrayLexema[i] = this.listaToken[i].lexema;
+            arrayIdtkn[i] = this.listaToken[i].idtkn;
+            arrayTkn[i] = this.listaToken[i].tkn;
+            arrayFila[i] = this.listaToken[i].fila;
+            arrayColumna[i] = this.listaToken[i].columna
         }
+
+        var list = {'Tokens':[]};
+
+        for(i = 0; i < arrayLexema.length; i++)
+        {
+            list.Tokens.push({
+                "lexema": arrayLexema[i],
+                "id": arrayIdtkn[i],
+                "token": arrayTkn[i],
+                "fila": arrayFila[i],
+                "columna": arrayColumna[i]
+            });
+        };
+
+        json = JSON.stringify(list);
+        var obj = JSON.parse(json);
+        
+        $("#res").text('' + json);
+        Guardarjson();
     }
+    
 }
 
 function ReporteTokns(ListaA)
@@ -833,4 +864,36 @@ function ReporteTokns(ListaA)
         }
         myTableDiv.appendChild(table);
     }    
+}
+
+function Guardarjson(){
+var escribir = document.getElementById("res").value;
+
+    var archivoblob = new Blob([escribir], {type:'text/plain'});
+
+    var nombreguardar = "Tokens.txt";
+
+
+    var dowloadlink = document.createElement("a");
+
+    dowloadlink.download = nombreguardar;
+
+    dowloadlink.innerHTML = "Link";
+
+    window.URL = window.URL || window.webkitURL;
+
+    dowloadlink.href = window.URL.createObjectURL(archivoblob);
+
+    dowloadlink.onclick = destroyClickedElement;
+
+    dowloadlink.style.display = "none";
+
+    document.body.appendChild(dowloadlink);
+
+    dowloadlink.click();
+}
+
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
 }

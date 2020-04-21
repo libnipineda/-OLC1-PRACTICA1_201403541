@@ -16,7 +16,7 @@ function Guardar()
 {
     var escribir = document.getElementById("editor").value;
 
-    var archivoblob = new Blob([escribir], {type:'text/plain'});
+    var archivoblob = new Blob([escribir], {type:'c#'});
 
     var nombreguardar = "Archivo.txt";
 
